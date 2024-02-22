@@ -7,9 +7,9 @@ terraform {
 }
 
 provider "datadog" {
-  api_key = "<datadog_api_key>"
-  app_key = "<datadog_app_key>"
-  api_url = "<datadog_api_url>"
+  api_key = var.dd_api_key
+  app_key = var.dd_app_key
+  api_url = "https://app.datadoghq.eu"
 }
 
 data "aws_iam_policy_document" "datadog_aws_integration_assume_role" {
@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "datadog_aws_integration_assume_role" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::464622532012:root"]
+      identifiers = ["arn:aws:iam::464622532012:root"] #The datadog users ID from the documentation not mine :D
     }
     condition {
       test     = "StringEquals"
@@ -133,6 +133,6 @@ resource "aws_iam_role_policy_attachment" "datadog_aws_integration" {
 }
 
 resource "datadog_integration_aws" "sandbox" {
-  account_id = "<AWS_account_id>"
+  account_id = var.AWS_account_id
   role_name  = "DatadogAWSIntegrationRole"
 }
